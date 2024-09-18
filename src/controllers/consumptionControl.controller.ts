@@ -1,16 +1,8 @@
-import { Request, Response, NextFunction, text } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import { GenerateText } from '../application/useCases/GenerateText';
 import { geminiGateway, googleApiFileGateway } from '../app';
 import { Upload } from '../application/useCases/Upload';
-
-async function postText(req: Request, res: Response, next: NextFunction) {
-  const prompt = req.body;
-  const generateTextUseCase = new GenerateText(geminiGateway);
-  const result = await generateTextUseCase.execute(prompt.prompt);
-  if (result) res.status(201).json(result);
-  else res.sendStatus(400);
-}
 
 async function upload(req: Request, res: Response, next: NextFunction) {
   const file = req.file;
@@ -41,6 +33,5 @@ async function upload(req: Request, res: Response, next: NextFunction) {
 }
 
 export default {
-  postText,
   upload,
 };
