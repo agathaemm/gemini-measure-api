@@ -1,5 +1,5 @@
 export interface GenerativeModel {
   generateContent(
-    prompt: string,
+    prompt: Array<any>,
   ): Promise<{ response: { text: () => string } }>;
 }

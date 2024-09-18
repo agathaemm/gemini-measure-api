@@ -6,7 +6,7 @@ export class GeminiAIGateway implements GenerativeModel {
   constructor(private apiKey: string) {}
 
   async generateContent(
-    prompt: string,
+    prompt: Array<any>,
   ): Promise<{ response: { text: () => string } }> {
     const genAI = new GoogleGenerativeAI(this.apiKey);
     const model = await genAI.getGenerativeModel({
