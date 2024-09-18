@@ -5,11 +5,13 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 
 import customerRouter from './routers/customer.router';
-import generateTextRouter from './routers/generateText.router';
+import consumptionControlRouter from './routers/consumptionControl.router';
 
 import { GeminiAIGateway } from './interfaces/gateways/GeminiAIGateway';
+import { GoogleApiFileGateway } from './interfaces/gateways/GoogleApiFileGateway';
 
 const apiKey = process.env.GEMINI_API_KEY || '';
+export const googleApiFileGateway = new GoogleApiFileGateway(apiKey);
 export const geminiGateway = new GeminiAIGateway(apiKey);
 
 const app = express();
@@ -23,7 +25,7 @@ app.use(helmet());
 app.use(express.json());
 
 app.use('/customers/', customerRouter);
-app.use('/ai/', generateTextRouter);
+app.use('/api/consumption-control', consumptionControlRouter);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send(error.message);
