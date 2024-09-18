@@ -21,7 +21,6 @@ const upload = multer({ storage: storage });
 
 const router = express.Router();
 
-router.post('/generate-text', consumptionControlController.postText);
 router.post(
   '/upload',
   upload.single('file'),

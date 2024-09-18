@@ -4,7 +4,6 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 
-import customerRouter from './routers/customer.router';
 import consumptionControlRouter from './routers/consumptionControl.router';
 
 import { GeminiAIGateway } from './interfaces/gateways/GeminiAIGateway';
@@ -24,7 +23,6 @@ app.use(helmet());
 
 app.use(express.json());
 
-app.use('/customers/', customerRouter);
 app.use('/api/consumption-control', consumptionControlRouter);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
