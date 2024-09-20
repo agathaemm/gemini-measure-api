@@ -5,7 +5,7 @@ export class UpdateCustomerUseCase {
   constructor(private customerRepository: ICustomerRepository) {}
 
   async execute(
-    id: number,
+    id: string,
     name: string,
     email: string,
   ): Promise<Customer | null> {

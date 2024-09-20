@@ -16,7 +16,7 @@ export class SequelizeCustomerRepository implements ICustomerRepository {
     );
   }
 
-  async findById(id: number): Promise<Customer | null> {
+  async findById(id: string): Promise<Customer | null> {
     const customer = await CustomerModel.findByPk(id);
     return customer
       ? new Customer(customer.name, customer.email, customer.id)
@@ -39,7 +39,7 @@ export class SequelizeCustomerRepository implements ICustomerRepository {
     return null;
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     const customer = await CustomerModel.findByPk(id);
     if (customer) {
       await customer.destroy();

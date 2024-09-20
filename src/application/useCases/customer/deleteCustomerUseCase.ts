@@ -3,7 +3,7 @@ import { ICustomerRepository } from '../../../domain/repositories/customerReposi
 export class DeleteCustomerUseCase {
   constructor(private customerRepository: ICustomerRepository) {}
 
-  async execute(id: number): Promise<void> {
+  async execute(id: string): Promise<void> {
     this.customerRepository.delete(id);
   }
 }

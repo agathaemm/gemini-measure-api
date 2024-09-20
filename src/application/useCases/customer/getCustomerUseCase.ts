@@ -4,7 +4,7 @@ import { ICustomerRepository } from '../../../domain/repositories/customerReposi
 export class GetCustomerUseCase {
   constructor(private customerRepository: ICustomerRepository) {}
 
-  async execute(id: number): Promise<Customer | null> {
+  async execute(id: string): Promise<Customer | null> {
     return this.customerRepository.findById(id);
   }
 }

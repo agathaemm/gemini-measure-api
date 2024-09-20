@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../postgresConnection';
 
 export class CustomerModel extends Model {
-  public id!: number;
+  public id!: string; // UUID
   public name!: string;
   public email!: string;
 }
@@ -10,8 +10,8 @@ export class CustomerModel extends Model {
 CustomerModel.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     name: {
