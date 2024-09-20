@@ -4,12 +4,15 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 
-import consumptionControlRouter from './routers/consumptionControl.router';
+// Rotas
 import customerRoutes from './interfaceAdapters/routes/customerRoutes';
+import consumptionRoutes from './interfaceAdapters/routes/consumptionRoutes';
 
+// Gateways
 import { GeminiAIGateway } from './interfaces/gateways/GeminiAIGateway';
 import { GoogleApiFileGateway } from './interfaces/gateways/GoogleApiFileGateway';
 
+// Infra
 import sequelize from './infrastructure/database/postgresConnection';
 
 const apiKey = process.env.GEMINI_API_KEY || '';
@@ -26,8 +29,8 @@ app.use(helmet());
 
 app.use(express.json());
 
-app.use('/api/consumption-control', consumptionControlRouter);
 app.use('/api', customerRoutes);
+app.use('/api/consumption/', consumptionRoutes);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send(error.message);

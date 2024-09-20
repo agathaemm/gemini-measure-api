@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
-import { GenerateText } from '../application/useCases/GenerateText';
-import { geminiGateway, googleApiFileGateway } from '../app';
-import { Upload } from '../application/useCases/Upload';
+import { GenerateText } from '../../application/useCases/GenerateText';
+import { geminiGateway, googleApiFileGateway } from '../../app';
+import { Upload } from '../../application/useCases/Upload';
 
-async function upload(req: Request, res: Response, next: NextFunction) {
+async function upload(req: Request, res: Response) {
   const file = req.file;
   if (!file) {
     res.sendStatus(400);
