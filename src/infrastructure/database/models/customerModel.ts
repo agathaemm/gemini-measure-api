@@ -26,6 +26,6 @@ CustomerModel.init(
   {
     sequelize,
     tableName: 'customers',
-    timestamps: false,
+    timestamps: true,
   },
 );
