@@ -3,21 +3,17 @@ import { Request, Response } from 'express';
 import { GenerateText } from '../../application/useCases/GenerateText';
 import { geminiGateway, googleApiFileGateway } from '../../app';
 import { Upload } from '../../application/useCases/Upload';
+import { base64ToImage } from '../../utils/base64ToImage';
 
 async function upload(req: Request, res: Response) {
-  const image = req.file;
+  const { customer_code, measure_datetime, measure_type, file } = req.body;
 
-  const { customer_code, measure_datetime, measure_type } = req.body;
-
-  if (!image) {
-    res.sendStatus(400);
-    return;
-  }
+  const filePath = base64ToImage(file);
 
   const uploadUseCase = new Upload(googleApiFileGateway);
-  const fileResponse = await uploadUseCase.upload(image.path, {
-    mimeType: image.mimetype,
-    displayName: 'Jetpack drawing',
+  const fileResponse = await uploadUseCase.upload(filePath, {
+    mimeType: 'image/png',
+    displayName: 'hidrometro',
   });
 
   const generateTextUseCase = new GenerateText(geminiGateway);

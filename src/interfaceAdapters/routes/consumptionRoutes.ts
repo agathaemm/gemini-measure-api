@@ -3,6 +3,8 @@ import multer from 'multer';
 import path from 'path';
 
 import consumptionController from '../controllers/consumptionController';
+import { consumptionValidator } from '../middlewares/consumptionValidator';
+import { validationMiddleware } from '../middlewares/validationMiddleware';
 
 // Configurando armazenamento de arquivos no multer
 const storage = multer.diskStorage({
@@ -21,6 +23,12 @@ const upload = multer({ storage: storage });
 
 const router = Router();
 
-router.post('/upload', upload.single('file'), consumptionController.upload);
+router.post(
+  '/upload',
+  consumptionValidator,
+  validationMiddleware,
+  upload.single('file'),
+  consumptionController.upload,
+);
 
 export default router;
