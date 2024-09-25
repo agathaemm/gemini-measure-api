@@ -1,4 +1,6 @@
+import { getMonth, getYear, lastDayOfMonth } from 'date-fns';
 import { Request, Response } from 'express';
+import { Op } from 'sequelize';
 
 import { SequelizeMeasureRepository } from '../../infrastructure/repositories/sequelizeMeasureRepository';
 import { CreateMeasureUseCase } from '../../application/useCases/measure/createMeasureUseCase';
@@ -11,8 +13,30 @@ const measureRepository = new SequelizeMeasureRepository();
 
 async function upload(req: Request, res: Response) {
   const { customer_code, measure_datetime, measure_type, file } = req.body;
-
   const filePath = base64ToImage(file);
+
+  const year = getYear(new Date(measure_datetime));
+  const month = getMonth(new Date(measure_datetime));
+  const startDate = new Date(year, month, 1);
+  const endDate = lastDayOfMonth(new Date(year, month + 1, 0));
+
+  const hasMeasure = !!(await measureRepository.findOne({
+    where: {
+      customerId: customer_code,
+      type: measure_type,
+      datetime: {
+        [Op.gte]: startDate,
+        [Op.lte]: endDate,
+      },
+    },
+  }));
+
+  if (hasMeasure) {
+    return res.status(409).json({
+      error_code: 'DOUBLE_REPORT',
+      error_description: 'Leitura do mês já realizada',
+    });
+  }
 
   const uploadUseCase = new Upload(googleApiFileGateway);
   const fileResponse = await uploadUseCase.upload(filePath, {
@@ -52,3 +76,6 @@ async function upload(req: Request, res: Response) {
 export default {
   upload,
 };
+
+// Apagar arquivo da pasta de uploads após ação realizada em caso de sucesso e erro
+// Adicionar os tres tipos de retorno solicitados

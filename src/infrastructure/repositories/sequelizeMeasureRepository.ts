@@ -39,8 +39,13 @@ export class SequelizeMeasureRepository implements IMeasureRepository {
     }
   }
 
-  async findAll(): Promise<Measure[]> {
-    const measures = await MeasureModel.findAll();
+  async findAll(options?: any): Promise<Measure[]> {
+    const measures = await MeasureModel.findAll(options);
     return measures.map((measure) => new Measure({ ...measure.dataValues }));
+  }
+
+  async findOne(options: any): Promise<Measure> {
+    const measure = await MeasureModel.findOne(options);
+    return new Measure({ ...measure.dataValues });
   }
 }
