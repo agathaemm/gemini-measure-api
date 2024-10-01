@@ -1,6 +1,7 @@
 import { getMonth, getYear, lastDayOfMonth } from 'date-fns';
 import { Request, Response } from 'express';
 import { Op } from 'sequelize';
+import { unlink } from 'fs';
 
 import { SequelizeMeasureRepository } from '../../infrastructure/repositories/sequelizeMeasureRepository';
 import { CreateMeasureUseCase } from '../../application/useCases/measure/createMeasureUseCase';
@@ -12,10 +13,10 @@ import { base64ToImage } from '../../utils/base64ToImage';
 const measureRepository = new SequelizeMeasureRepository();
 
 async function upload(req: Request, res: Response) {
-  try {
-    const { customer_code, measure_datetime, measure_type, file } = req.body;
-    const filePath = base64ToImage(file);
+  const { customer_code, measure_datetime, measure_type, file } = req.body;
+  const filePath = base64ToImage(file);
 
+  try {
     const year = getYear(new Date(measure_datetime));
     const month = getMonth(new Date(measure_datetime));
     const startDate = new Date(year, month, 1);
@@ -78,8 +79,11 @@ async function upload(req: Request, res: Response) {
       error_code: 'GENERIC_ERROR',
       error_description: 'Não foi possível salvar os dados.',
     };
-  } catch ({ status_code, ...etc }: any) {
+  } catch (err: any) {
+    const { status_code, ...etc } = err;
     res.status(status_code ?? 400).json(etc);
+  } finally {
+    await unlink(filePath, () => {});
   }
 }
 

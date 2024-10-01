@@ -4,7 +4,7 @@ import { IMeasureRepository } from '../../../domain/repositories/measureReposito
 export class GetOneMeasureUseCase {
   constructor(private measureRepository: IMeasureRepository) {}
 
-  async execute(options: any): Promise<Measure> {
+  async execute(options: any): Promise<Measure | null> {
     return this.measureRepository.findOne(options);
   }
 }

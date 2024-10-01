@@ -6,5 +6,5 @@ export interface IMeasureRepository {
   update(measure: Measure): Promise<Measure | null>;
   delete(id: string): Promise<void>;
   findAll(options?: any): Promise<Measure[]>;
-  findOne(options: any): Promise<Measure>;
+  findOne(options: any): Promise<Measure | null>;
 }
