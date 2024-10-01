@@ -68,7 +68,7 @@ async function upload(req: Request, res: Response) {
     });
 
     if (result) {
-      return res.status(201).json({
+      return res.status(200).json({
         image_url: fileResponse.file.uri,
         measure_uuid: measure.id,
         measure_value: JSON.parse(result).valor,
@@ -90,6 +90,3 @@ async function upload(req: Request, res: Response) {
 export default {
   upload,
 };
-
-// Apagar arquivo da pasta de uploads após ação realizada em caso de sucesso e erro
-// Adicionar os tres tipos de retorno solicitados
