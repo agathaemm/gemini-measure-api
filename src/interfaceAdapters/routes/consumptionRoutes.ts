@@ -14,5 +14,6 @@ router.post(
   consumptionController.upload,
 );
 router.patch('/confirm', confirmValidator, consumptionController.confirm);
+router.get('/:customer_code/list', consumptionController.listCustomerMeasures);
 
 export default router;

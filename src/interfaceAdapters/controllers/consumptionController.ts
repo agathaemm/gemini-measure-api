@@ -126,7 +126,56 @@ async function confirm(req: Request, res: Response) {
   }
 }
 
+async function listCustomerMeasures(req: Request, res: Response) {
+  const { customer_code } = req.params;
+  const { measure_type } = req.query;
+
+  try {
+    if (
+      measure_type &&
+      !['WATER', 'GAS'].includes((measure_type as string).toUpperCase())
+    ) {
+      throw {
+        status_code: 400,
+        error_code: 'INVALID_TYPE',
+        error_description: 'tipo de permissão não permitida',
+      };
+    }
+
+    const measures = await measureRepository.findAll({
+      where: {
+        customerId: customer_code,
+        ...(measure_type && { type: (measure_type as string).toUpperCase() }),
+      },
+    });
+
+    if (!measures.length) {
+      throw {
+        status_code: 404,
+        error_code: 'MEASURES_NOT_FOUND',
+        error_description: 'Nenhuma leitura encontrada',
+      };
+    }
+
+    return res.status(200).json({
+      customer_code,
+      measures: measures.map((measure) => ({
+        measure_uuid: measure.id,
+        measure_datetime: measure.datetime,
+        measure_type: measure.type,
+        has_confirmed: measure.confirmed,
+      })),
+    });
+  } catch (err: any) {
+    const { status_code, ...etc } = err;
+    res.status(status_code ?? 400).json(etc);
+  }
+}
+
 export default {
   upload,
   confirm,
+  listCustomerMeasures,
 };
+
+// salvar o image url e retornar na listagem
