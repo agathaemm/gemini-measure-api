@@ -1,25 +1,35 @@
 export type TMeasure = {
-  id?: string;
-  customerId: string;
-  datetime: string;
-  type: string;
   value?: number | null;
   confirmed?: boolean;
+  customerId: string;
+  imageUrl?: string;
+  datetime: string;
+  type: string;
+  id?: string;
 };
 
 export class Measure {
-  public id?: string;
-  public customerId: string;
-  public datetime: string;
-  public type: string;
   public value?: number | null;
   public confirmed?: boolean;
+  public customerId: string;
+  public imageUrl?: string;
+  public datetime: string;
+  public type: string;
+  public id?: string;
 
-  constructor({ customerId, datetime, type, id, value, confirmed }: TMeasure) {
+  constructor({
+    customerId,
+    confirmed,
+    datetime,
+    imageUrl,
+    value,
+    type,
+    id,
+  }: TMeasure) {
+    this.confirmed = !!confirmed;
     this.customerId = customerId;
     this.datetime = datetime;
     this.type = type;
-    this.confirmed = !!confirmed;
 
     if (id) {
       this.id = id;
@@ -27,6 +37,10 @@ export class Measure {
 
     if (value) {
       this.value = value;
+    }
+
+    if (imageUrl) {
+      this.imageUrl = imageUrl;
     }
   }
 }

@@ -7,6 +7,7 @@ export class SequelizeMeasureRepository implements IMeasureRepository {
     const createdMeasure = await MeasureModel.create({
       customerId: measure.customerId,
       datetime: measure.datetime,
+      imageUrl: measure.imageUrl,
       type: measure.type,
     });
 
@@ -26,6 +27,7 @@ export class SequelizeMeasureRepository implements IMeasureRepository {
       updatedMeasure.type = measure.type;
       updatedMeasure.value = measure.value || null;
       updatedMeasure.confirmed = !!measure.confirmed;
+      if (measure.imageUrl) updatedMeasure.imageUrl = measure.imageUrl;
       await updatedMeasure.save();
       return new Measure({ ...updatedMeasure.dataValues });
     }

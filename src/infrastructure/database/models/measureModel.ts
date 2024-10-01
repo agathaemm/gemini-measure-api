@@ -9,6 +9,7 @@ export class MeasureModel extends Model {
   public type!: string;
   public value!: number | null;
   public confirmed!: boolean;
+  public imageUrl!: string;
 }
 
 MeasureModel.init(
@@ -41,6 +42,10 @@ MeasureModel.init(
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: false,
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {

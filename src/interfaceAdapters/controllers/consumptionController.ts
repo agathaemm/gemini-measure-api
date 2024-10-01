@@ -66,11 +66,12 @@ async function upload(req: Request, res: Response) {
       customerId: customer_code,
       datetime: measure_datetime,
       type: measure_type,
+      imageUrl: fileResponse.file.uri,
     });
 
     if (result) {
       return res.status(200).json({
-        image_url: fileResponse.file.uri,
+        image_url: measure.imageUrl,
         measure_uuid: measure.id,
         measure_value: JSON.parse(result).valor,
       });
@@ -164,6 +165,7 @@ async function listCustomerMeasures(req: Request, res: Response) {
         measure_datetime: measure.datetime,
         measure_type: measure.type,
         has_confirmed: measure.confirmed,
+        image_url: measure.imageUrl,
       })),
     });
   } catch (err: any) {
@@ -177,5 +179,3 @@ export default {
   confirm,
   listCustomerMeasures,
 };
-
-// salvar o image url e retornar na listagem
