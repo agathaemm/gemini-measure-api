@@ -8,6 +8,7 @@ export class MeasureModel extends Model {
   public datetime!: string;
   public type!: string;
   public value!: number | null;
+  public confirmed!: boolean;
 }
 
 MeasureModel.init(
@@ -35,6 +36,11 @@ MeasureModel.init(
     value: {
       type: DataTypes.INTEGER,
       allowNull: true,
+    },
+    confirmed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
     },
   },
   {

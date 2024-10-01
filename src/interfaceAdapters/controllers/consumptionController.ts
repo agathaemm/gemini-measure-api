@@ -5,6 +5,7 @@ import { unlink } from 'fs';
 
 import { SequelizeMeasureRepository } from '../../infrastructure/repositories/sequelizeMeasureRepository';
 import { CreateMeasureUseCase } from '../../application/useCases/measure/createMeasureUseCase';
+import { UpdateMeasureUseCase } from '../../application/useCases/measure/updateMeasureUseCase';
 import { GenerateText } from '../../application/useCases/GenerateText';
 import { geminiGateway, googleApiFileGateway } from '../../app';
 import { Upload } from '../../application/useCases/Upload';
@@ -87,6 +88,45 @@ async function upload(req: Request, res: Response) {
   }
 }
 
+async function confirm(req: Request, res: Response) {
+  const { measure_uuid, confirmed_value } = req.body;
+
+  try {
+    const measure = await measureRepository.findById(measure_uuid);
+
+    if (!measure) {
+      throw {
+        status_code: 404,
+        error_code: 'MEASURE_NOT_FOUND',
+        error_description: 'Leitura não encontrada',
+      };
+    }
+
+    if (measure.confirmed) {
+      throw {
+        status_code: 409,
+        error_code: 'CONFIRMATION_DUPLICATE',
+        error_description: 'Leitura do mês já realizada',
+      };
+    }
+
+    const updateMeasureUseCase = new UpdateMeasureUseCase(measureRepository);
+    await updateMeasureUseCase.execute({
+      ...measure,
+      value: confirmed_value,
+      confirmed: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+    });
+  } catch (err: any) {
+    const { status_code, ...etc } = err;
+    res.status(status_code ?? 400).json(etc);
+  }
+}
+
 export default {
   upload,
+  confirm,
 };

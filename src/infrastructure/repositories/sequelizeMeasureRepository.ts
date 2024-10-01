@@ -25,6 +25,7 @@ export class SequelizeMeasureRepository implements IMeasureRepository {
       updatedMeasure.datetime = measure.datetime;
       updatedMeasure.type = measure.type;
       updatedMeasure.value = measure.value || null;
+      updatedMeasure.confirmed = !!measure.confirmed;
       await updatedMeasure.save();
       return new Measure({ ...updatedMeasure.dataValues });
     }

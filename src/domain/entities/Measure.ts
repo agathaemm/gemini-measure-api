@@ -4,6 +4,7 @@ export type TMeasure = {
   datetime: string;
   type: string;
   value?: number | null;
+  confirmed?: boolean;
 };
 
 export class Measure {
@@ -12,11 +13,13 @@ export class Measure {
   public datetime: string;
   public type: string;
   public value?: number | null;
+  public confirmed?: boolean;
 
-  constructor({ customerId, datetime, type, id, value }: TMeasure) {
+  constructor({ customerId, datetime, type, id, value, confirmed }: TMeasure) {
     this.customerId = customerId;
     this.datetime = datetime;
     this.type = type;
+    this.confirmed = !!confirmed;
 
     if (id) {
       this.id = id;

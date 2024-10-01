@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-export const consumptionValidator = [
+export const uploadValidator = [
   body('customer_code')
     .notEmpty()
     .withMessage('The field customer_code is required'),
