@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import consumptionController from '../controllers/consumptionController';
+import consumptionController from '../controllers/measureController';
 import { uploadValidator } from '../middlewares/uploadValidator';
 import { confirmValidator } from '../middlewares/confirmValidator';
 import { validationMiddleware } from '../middlewares/validationMiddleware';

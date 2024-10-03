@@ -6,7 +6,7 @@ import helmet from 'helmet';
 
 // Rotas
 import customerRoutes from './interfaceAdapters/routes/customerRoutes';
-import consumptionRoutes from './interfaceAdapters/routes/consumptionRoutes';
+import measureRoutes from './interfaceAdapters/routes/measureRoutes';
 
 // Gateways
 import { GeminiAIGateway } from './interfaces/gateways/GeminiAIGateway';
@@ -30,7 +30,7 @@ app.use(helmet());
 app.use(express.json());
 
 app.use('/api', customerRoutes);
-app.use('/api/consumption/', consumptionRoutes);
+app.use('/api/measures/', measureRoutes);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send(error.message);
